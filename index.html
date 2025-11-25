@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLA 2026 Session 82 - Open Source Humanities in the Age of AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --terminal-green: #00ff41;
+            --terminal-bg: #0d1117;
+            --terminal-dark: #010409;
+            --terminal-light: #1f2937;
+            --accent-cyan: #00d9ff;
+            --text-dim: #8b949e;
+        }
+
+        body {
+            font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+            background-color: var(--terminal-bg);
+            color: var(--terminal-green);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .terminal-header {
+            background: var(--terminal-dark);
+            border: 2px solid var(--terminal-green);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        .terminal-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--terminal-green);
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .btn-red { background: #ff5f56; }
+        .btn-yellow { background: #ffbd2e; }
+        .btn-green { background: #27c93f; }
+
+        h1 {
+            color: var(--accent-cyan);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+            line-height: 1.3;
+        }
+
+        h2 {
+            color: var(--terminal-green);
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 2px solid var(--terminal-green);
+            padding-bottom: 0.5rem;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
+        }
+
+        h3 {
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .session-info {
+            display: grid;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--terminal-light);
+            border-left: 4px solid var(--terminal-green);
+        }
+
+        .info-line {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .info-label {
+            color: var(--accent-cyan);
+            min-width: 100px;
+            font-weight: bold;
+        }
+
+        .info-value {
+            color: var(--terminal-green);
+        }
+
+        .description {
+            background: var(--terminal-dark);
+            padding: 1.5rem;
+            border: 1px solid var(--terminal-green);
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            line-height: 1.8;
+        }
+
+        .speaker-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .speaker-card {
+            background: var(--terminal-light);
+            padding: 1rem;
+            border-left: 3px solid var(--terminal-green);
+            transition: all 0.3s ease;
+        }
+
+        .speaker-card:hover {
+            border-left-width: 6px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            transform: translateX(5px);
+        }
+
+        .speaker-name {
+            color: var(--accent-cyan);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .speaker-name a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .speaker-name a:hover {
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+        }
+
+        .speaker-name a::before {
+            content: '> ';
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .speaker-name a:hover::before {
+            opacity: 1;
+        }
+
+        .speaker-affiliation {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+
+        .abstract-section {
+            background: var(--terminal-dark);
+            border: 1px solid var(--terminal-green);
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 2rem 0;
+            scroll-margin-top: 2rem;
+        }
+
+        .abstract-title {
+            color: var(--accent-cyan);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed var(--terminal-green);
+        }
+
+        .abstract-content {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .abstract-content p {
+            margin-bottom: 1rem;
+        }
+
+        .bio-section {
+            background: var(--terminal-light);
+            padding: 1rem;
+            border-left: 3px solid var(--accent-cyan);
+            margin-top: 1rem;
+        }
+
+        .bio-label {
+            color: var(--accent-cyan);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .works-cited {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--terminal-light);
+        }
+
+        .works-cited-title {
+            color: var(--terminal-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .citation {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px dashed var(--terminal-green);
+            margin: 3rem 0;
+            opacity: 0.5;
+        }
+
+        .prompt {
+            color: var(--accent-cyan);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--terminal-green);
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            .info-line {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .info-label {
+                min-width: auto;
+            }
+
+            .abstract-section {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            .terminal-header {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Link styling */
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        a:hover {
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="terminal-header">
+            <div class="terminal-bar">
+                <span class="terminal-button btn-red"></span>
+                <span class="terminal-button btn-yellow"></span>
+                <span class="terminal-button btn-green"></span>
+            </div>
+            <h1>$ cat mla2026_session82.txt</h1>
+            <h1>MLA 2026 Session 82 - Open Source Humanities in the Age of AI</h1>
+
+            <div class="session-info">
+                <div class="info-line">
+                    <span class="info-label">Date:</span>
+                    <span class="info-value">Thursday, 8 January 2026</span>
+                </div>
+                <div class="info-line">
+                    <span class="info-label">Time:</span>
+                    <span class="info-value">3:30 PM - 4:45 PM</span>
+                </div>
+                <div class="info-line">
+                    <span class="info-label">Location:</span>
+                    <span class="info-value">MTCC - 206F</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>// Description</h2>
+        <div class="description">
+            With edtech approaches to generative AI increasingly taking center stage on campus, how can we learn from ethical, feminist, and open-source efforts in digital humanities and electronic literature to build meaningful alternatives? Participants share brief provocations with examples ranging from material zines and feminist poetics to software platforms and sustainable publishing, followed by a discussion of strategies and tools.
+        </div>
+
+        <h2>// Speakers</h2>
+
+        <h3>Presider</h3>
+        <div class="speaker-grid">
+            <div class="speaker-card">
+                <div class="speaker-name">Anastasia Salter</div>
+                <div class="speaker-affiliation">U of Central Florida</div>
+            </div>
+        </div>
+
+        <h3>Speakers</h3>
+        <div class="speaker-grid">
+            <div class="speaker-card">
+                <div class="speaker-name"><a href="#duvvoori">Kavi Duvvoori</a></div>
+                <div class="speaker-affiliation">U of Waterloo</div>
+            </div>
+
+            <div class="speaker-card">
+                <div class="speaker-name"><a href="#fan">Lai-Tze Fan</a></div>
+                <div class="speaker-affiliation">U of Waterloo</div>
+            </div>
+
+            <div class="speaker-card">
+                <div class="speaker-name"><a href="#flores">Leonardo Flores</a></div>
+                <div class="speaker-affiliation">Appalachian State U</div>
+            </div>
+
+            <div class="speaker-card">
+                <div class="speaker-name">John Murray</div>
+                <div class="speaker-affiliation">U of Central Florida</div>
+            </div>
+
+            <div class="speaker-card">
+                <div class="speaker-name"><a href="#obbard">Kiera Obbard</a></div>
+                <div class="speaker-affiliation">U of Guelph</div>
+            </div>
+
+            <div class="speaker-card">
+                <div class="speaker-name"><a href="#bessette">Lee Skallerup Bessette</a></div>
+                <div class="speaker-affiliation">Georgetown U</div>
+            </div>
+        </div>
+
+        <h2>// Abstracts and Bios</h2>
+
+        <div class="abstract-section" id="duvvoori">
+            <div class="abstract-title">Learning Mycelial Strategies in Algorithmic Culture from Voz Pública</div>
+            <div class="speaker-name">Kavi Duvvoori</div>
+
+            <div class="abstract-content">
+                <p>Dora Bartilotti's <em>Voz Pública</em> weaves relational and affective networks through web-based storytelling and community workshops, linking narratives both in JavaScript algorithms and woven textiles, to amplify the voices of survivors of sexual violence in urban Latin America (LASTESIS 2023; D'Ignazio 2024). This project exemplifies how digital networks can enable socially just world-building. Using mycelial networks (fungal threads in soil) as a guide, we reimagine digital communication systems as spaces for cultivating diverse, sustainable, and interconnected forms of community and expression amidst the challenges of the algorithmic age.</p>
+
+                <p>Rather than accepting AI as it is sold––an inevitable replacement of human creativity, labor, and sociality––we argue for using mycelial thinking (Tsing 2015) and glitch feminism (Russell 2022) to design systems that support cultural plurality, ecological repair, and social control (Tandon et. al. 2022) to confront the power dynamics shaped by fantasies of domination, dehumanization, and replacement prevalent in tech bro cultures and AI imaginaries (Rhee 2023), which often displace consideration of "AI"s material infrastructures and social impacts (Crawford 2021). We argue that interconnectedness, remediation, and detoxification (Brown 2017, drawing on Boggs 2012) are vital tactics for creating habitable computational contexts. We offer interconnectedness to ask the question: could linguistic algorithms play a role in activating and supporting social mobilizations, if algorithms are composed as an entangled component rather than a techno-fix opposed to sociality? We offer remediation to ask: can computational communicative contexts be made habitable? And, last, we offer detoxification to ask: can the homogenization of language be resisted by using these systems against their intent?</p>
+            </div>
+
+            <div class="works-cited">
+                <div class="works-cited-title">Works Cited</div>
+                <div class="citation">Bartilotti, Dora. n.d. Voz Pública. https://vozpublica.net/.</div>
+                <div class="citation">Bender, Emily M., et al. "On the dangers of stochastic parrots: Can language models be too big?🦜." Proceedings of the 2021 ACM conference on fairness, accountability, and transparency. 2021.</div>
+                <div class="citation">Brown, Adrienne Maree. 2017. <em>Emergent Strategy: Shaping Change, Changing Worlds</em>. AK Press.</div>
+                <div class="citation">Boggs, Grace Lee., Kurashige, Scott. 2012. <em>The Next American Revolution: Sustainable Activism for the Twenty-First Century</em>. University of California Press.</div>
+                <div class="citation">Chun, Wendy. 2021. <em>Discriminating Data: Correlation, Neighborhoods, and the New Politics of Recognition</em>. MIT Press.</div>
+                <div class="citation">Crawford, Kate. <em>The Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence</em>. Yale University Press, 2021.</div>
+                <div class="citation">D'Ignazio, Catherine. <em>Counting feminicide: Data feminism in action</em>. MIT Press, 2024.</div>
+                <div class="citation">LASTESIS. 2023. <em>Set Fear on Fire: The Feminist Call That Set the Americas Ablaze</em>. Verso</div>
+                <div class="citation">Russell, Legacy. 2020. <em>Glitch Feminism: A Manifesto</em>. Verso Books.</div>
+                <div class="citation">Tsing, Anna Lowenhaupt. 2015. <em>The Mushroom at the End of the World: On the Possibility of Life in Capitalist Ruins</em>. Princeton University Press.</div>
+                <div class="citation">Udayan Tandon, Vera Khovanskaya, Enrique Arcilla, Mikaiil Haji Hussein, Peter Zschiesche, and Lilly Irani. 2022. "Hostile Ecologies: Navigating the Barriers to Community-Led Innovation." <em>Proc. ACM Hum.-Comput. Interact.</em> 6, CSCW2, Article 443.</div>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-label">BIO:</div>
+                Kavi Duvvoori is a PhD candidate on the Haldimand tract, at the University of Waterloo, in English. Their research on computational rhetoric explores how algorithms mediate communication: incorporating linguistics, research/creation, and feminist, queer, and ecological media studies. They are an editor for <em>Taper</em> magazine, and have shared computational writing in various publications.
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="abstract-section" id="fan">
+            <div class="abstract-title">Human-Centered AI Literacy: Open Humanities Approaches for the Classroom</div>
+            <div class="speaker-name">Lai-Tze Fan</div>
+
+            <div class="abstract-content">
+                <p>This talk presents a human-centered, social sciences and humanities (SSH) approach to improving AI literacy among youth and non-specialists, grounded in a series of participatory workshops I have delivered to over 250 middle-school students and adapted into a new research program on AI-synthetic image literacy. While public discourse around AI education tends to focus on technical skills or computational proficiency, these workshops demonstrate how SSH-driven methods—critical media literacy, visual rhetoric, bias awareness, and participatory discussion—can significantly enhance young people's confidence, discernment, and trust when engaging with AI-generated content. Activities include simplified versions of technical image-auditing methods, hands-on "spot-the-fake" practices, guided ethical reflection, and collaborative meaning-making that foreground students' lived experiences online.</p>
+
+                <p>Although designed for middle and high school students, this work also speaks directly to a growing challenge within higher education: the rapid expansion of AI-driven surveillance tools in learning management systems and academic integrity platforms. These systems, often proprietary and opaque, are raising urgent questions about privacy, consent, fairness, and institutional trust. I argue that digital humanities and electronic literature scholars—long attuned to questions of authorship, mediation, and power—are uniquely positioned to lead critical, open, and participatory alternatives.</p>
+
+                <p>Talking through the design of the youth workshops, I illustrate how SSH-grounded AI literacy practices can inform university-level responses to surveillance-driven edtech, including by emphasizing transparency, interpretability, open-source thinking, and public-facing literacy as counterweights to opacity and control. In these ways, we can use open humanities frameworks to shape more ethical pathways for AI in educational spaces.</p>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-label">BIO:</div>
+                Lai-Tze Fan is the Canada Research Chair in Technology and Social Change and Associate Professor at the University of Waterloo, Canada, and Associate Professor II at the University of Bergen, Norway. She directs The U&AI Lab at UWaterloo, which uses interdisciplinary approaches toward the design of responsible AI, and she is the Co-Director of Waterloo's TRuST Scholarly Network with Nobel Laureate Donna Strickland, focusing on public trust in science and technology. Fan is an Editor of the open-access journals <em>electronic book review</em> and <em>the digital review</em>, and she serves on the Board of the Electronic Literature Organization. She is Co-Editor of the forthcoming open-access collection <em>EnTwine: A Critical and Creative Companion to Teaching with Twine</em> (2026) from Amherst College Press.
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="abstract-section" id="obbard">
+            <div class="abstract-title">Visualizing Feminist Poetry with Open-Source Python Animation and AI systems</div>
+            <div class="speaker-name">Kiera Obbard</div>
+
+            <div class="abstract-content">
+                <p>As generative AI becomes increasingly centred in not only educational technology, but also contemporary explorations of art and technology, this paper explores ethical, feminist, and open-source approaches to AI-driven kinetic poetry, offering a meaningful alternative to proprietary, black-box AI systems.</p>
+
+                <p>Drawing from feminist and digital humanities methodologies that centre difference (Ahmed; McPherson), and employing creative analytic practices (Berbary), this project resists AI as an extractive force and instead embraces open-source tools as a method for technologically-facilitated artistic expression. Using Manim, an open-source Python library for mathematical animations, and open-source natural language processing (NLP) tools like spaCy, I will map poetic structures to dynamic animations, where words appear, fade, and shift in response to AI-assigned rhythm scores. The result will be kinetic poetry visualizations that bring movement and life to the feminist poetry on the page. This phase of visualizations is the first in a longer project that seeks to explore and compare the use of non-generative AI and generative AI (GenAI) to visualize feminist poetry in ways that uphold the ethics and values of intersectional feminism.</p>
+
+                <p>In this panel, I will discuss the first phase of visualizing feminist poetry for poetic rhythm, rhyme, and emotional tone while prioritizing transparency, open-source tools, and creative agency. By employing open-source tools to create AI-powered kinetic poetry, this work envisions a future where GenAI is used not to replace creativity but to enhance participatory, ethical, and critical engagements with language in a way that fosters a "poetics of dissent" (Milne). Unlike mainstream AI-driven edtech that prioritizes efficiency and automation, this project foregrounds interpretation, embodiment, and play—critical components to feminist creative analytic practices.</p>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-label">BIO:</div>
+                Kiera Obbard (she/her) is a poet and a SSHRC Postdoctoral Fellow at the University of Waterloo where she studies the feminization and denigration of women's writing and associated publishing technologies. Her current book project, <em>The Instagram Effect</em> (forthcoming WLU Press), critically evaluates the economic, technological, literary, social, and cultural risks of a globally popular literature being shared and read on third-party proprietary platforms. She was previously the Michael Ridley Postdoctoral Scholar in Digital Humanities at the University of Guelph.
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="abstract-section" id="flores">
+            <div class="abstract-title">What the FOSS? Lessons from the Electronic Literature Community on Creating Open Access Software</div>
+            <div class="speaker-name">Leonardo Flores</div>
+
+            <div class="abstract-content">
+                <p>In this presentation I argue that the electronic literature (elit) community offers a vital model for how the humanities can ethically navigate generative AI by embracing free and open-source software (FOSS) principles. Drawing on Montfort and Wardrip-Fruin's Acid-Free Bits white paper from 2004, I identify elit practices they highlight– such as using open-source platforms, documentation, code validation and porting, using plain-text rather than compiled code, and more– to create and sustain creative work despite waves of technological obsolescence. Using the computational poetry journal <em>Taper</em> as a case study, the talk shows how publishing software-like literary works under libre licenses fosters community, remix culture, and creativity in ways that will outlast work created with proprietary, corporately developed software. Extending these lessons to the AI era, it proposes that adopting open-source methodologies and engaging with accessible models such as OLMo 2 can help humanists shift from passive consumption to transparent, collaborative, and community-driven knowledge production. The FOSS ethos thus equips humanities research not only to survive technological change but to help shape a more equitable and open digital ecosystem.</p>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-label">BIO:</div>
+                Professor Leonardo Flores is Chair of the English Department at Appalachian State University and President of the Latin American Electronic Literature Network – Lit(e)Lat. His research areas are electronic literature, with a focus on e-poetry, digital writing, and the history and strategic growth of the field. He's known for <em>I ♥ E-Poetry</em>, the <em>Electronic Literature Collection, Volume 3</em>, "Third Generation Electronic Literature" and the <em>Antología Lit(e)Lat, Volume 1</em>. He was a member of the MLA-CCCC Joint Task Force on AI and Writing and is now part of the MLA Task Force on Generative AI Initiatives and is available to offer talks and workshops on AI and its impact on education, policy, scholarship, and creativity. He is also a cyborg digital writer with a thriving creative coding practice. For more information on his current work, visit leonardoflores.net.
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="abstract-section" id="bessette">
+            <div class="abstract-title">Make It a Zine: Resisting AI in the Writing Classroom</div>
+            <div class="speaker-name">Lee Skallerup Bessette</div>
+
+            <div class="abstract-content">
+                <p>Writing is a technology. Our ability to create symbols on surfaces required technological innovations, and our ability to then circulate, then reproduce, said symbols on surfaces required further technological innovation. Within those cycles of innovation around the creation and circulation of texts, as the cost of producing text on paper came down, the rise of small, self-published works rose. You can trace the history as far back as pamphlets in the late 19th century, but the booklet format gained popularity in the 1920s during the Harlem Renaissance with a publication called <em>Fire!!</em> Early on, zines were also popular in the science fiction communities. They have always been used to connect smaller, marginal communities, providing inspiration, resources, and an outlet for outrage and resistance.</p>
+
+                <p>Fast-forward to a writing classroom in the fall of 2024. I have long been an early adopter of technology in the classroom, but recently I am becoming more and more disenchanted by so-called "innovations". In an effort to help students understand what AI does when it generates text and what they do when they write, we look at the history of writing technology, as well as computing metaphors and tech hype. As an instructor, how could I ask the students to create a final project that would be fodder for the AI machine and have limited (if any) impact on the world around them? Enter THE ZINE. Inspired and informed by the SlowDH, MakerDH, and MiniComp movements, and by the subversive zines from times past, I wanted to inspire students to explore and engage critically with technology through analogue outputs, resisting AI and other extractive ed-tech tools. This talk will examine the rhetorical and subversive elements of the zine, and the zine as a tool of resistance to both AI and our current political moment</p>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-label">BIO:</div>
+                Lee Skallerup Bessette is the Assistant Director of Digital Learning at the Center for New Designs in Learning and Scholarship at Georgetown University. She is the editor of <em>Affective Labor and Alt-Ac Careers</em>.
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 1.5rem; background: var(--terminal-dark); border: 1px dashed var(--terminal-green); border-radius: 4px; text-align: center;">
+            <span class="prompt">user@mla2026:~$</span><span class="cursor"></span>
+        </div>
+    </div>
+</body>
+</html>
